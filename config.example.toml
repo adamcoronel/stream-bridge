@@ -1,0 +1,10 @@
+# StreamBridge Configuration File
+# ================================
+# Copy this file to config.toml and fill out the values below.
+# NOTE: config.toml is gitignored and will never be committed to the repository, keeping your credentials safe.
+
+[discord]
+# Your Discord bot token. Found in the Discord Developer Portal:
+# https://discord.com/developers/applications
+# Select your application -> Overview -> Bot -> Token
+token = "your-bot-token-here"
