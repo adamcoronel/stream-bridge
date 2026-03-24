@@ -1,10 +1,60 @@
+# Cargo.toml
+# ==========
+# This file is the manifest for StreamBridge.
+# It defines the project metadata and all external dependencies the project needs to compile and run.
+# More info: https://doc.rust-lang.org/cargo/reference/manifest.html
+#
+# Dependencies are other programs that someone else wrote that this program needs in order to run.
+# Each dependency is listed below with an explanation of why it is needed.
+# A full explanation of each dependency can be found in the FAQ section of the documentation.
+#
+# Versions follow Semantic Versioning (SemVer): MAJOR.MINOR.PATCH
+# Specifying "1.0" means "any version >= 1.0.0 and < 2.0.0".
+# Cargo.lock pins the exact version used so builds are always reproducible.
+# More info: https://semver.org/
+
 [package]
 name = "stream-bridge"
 version = "0.1.0"
 edition = "2024"
+description = "A self-hosted, open source Discord bot for streamers"
+license = "MIT"
 
 [dependencies]
+# Makes HTTP requests to Discord's REST API.
+# Handles TCP connections, TLS encryption, and HTTP for us.
+# More info: https://docs.rs/reqwest
 reqwest = { version = "0.13", features = ["json"] }
+
+# Async runtime that drives all concurrent operations in StreamBridge.
+# Rust's standard library defines async/await but does not include the engine that runs it. Tokio is that engine.
+# More info: https://docs.rs/tokio
 tokio = { version = "1", features = ["full"] }
+
+# Serialization and deserialization framework.
+# Used to convert between Rust structs and data formats like JSON and TOML.
+# The "derive" feature lets us automatically implement these traits on our structs.
+# More info: https://docs.rs/serde
 serde = { version = "1", features = ["derive"] }
+
+# Configuration file parsing.
+# Used to read and parse config.toml into Rust structs via serde.
+# More info: https://docs.rs/toml
 toml = "1"
+
+# WebSocket client for Discord's Gateway connection.
+# Discord's real-time event system uses WebSockets.
+# This crate implements the WebSocket protocol (RFC 6455) so we can focus on Discord's logic.
+# The "rustls-tls-native-roots" feature enables pure Rust TLS using your operating system's native certificate store for secure wss:// connections.
+# More info: https://docs.rs/tokio-tungstenite
+tokio-tungstenite = { version = "0.28", features = ["rustls-tls-native-roots"] }
+
+# JSON serialization and deserialization.
+# Used to serialize Gateway payloads we send to Discord and deserialize ones we receive. Works together with serde.
+# More info: https://docs.rs/serde_json
+serde_json = "1"
+
+# Stream and sink utilities for working with async WebSocket connections.
+# Provides the StreamExt and SinkExt traits used to send and receive WebSocket messages from Discord's Gateway.
+# More info: https://docs.rs/futures-util
+futures-util = "0.3"
